@@ -1,0 +1,1 @@
+mon depot github cest: https://github.com/fortunedambi/jeuxfortune.git
