@@ -1,0 +1,350 @@
+/* ==========================================================================
+   1. VARIABLES ET CONFIGURATION GLOBALE
+   ========================================================================== */
+   :root {
+    --bg-gradient: linear-gradient(135deg, #0f172a, #1e1b4b);
+    --card-bg-back: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    --card-bg-front: #ffffff;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #10b981;
+    --accent-hover: #059669;
+    --danger: #ef4444;
+    --panel-bg: rgba(30, 41, 59, 0.7);
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    --font-family: 'Poppins', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   2. ÉCRAN D'ACCUEIL / CONFIGURATION
+   ========================================================================== */
+.screen {
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+.scores-panel {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+}
+
+.scores-panel p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.score-val {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn {
+    font-family: var(--font-family);
+    background: var(--card-bg-back);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-success {
+    background: var(--accent);
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.4);
+}
+
+.btn-success:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.5);
+}
+
+/* ==========================================================================
+   3. INTERFACE DE JEU (IN-GAME)
+   ========================================================================== */
+.game-container {
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.stats-bar {
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.stat-item {
+    font-size: 1rem;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+}
+
+.stat-value {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.btn-small:hover {
+    background: var(--danger);
+    border-color: transparent;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+}
+
+/* ==========================================================================
+   4. LA GRILLE DE CARTES ET EFFET FLIP 3D CORRIGÉ
+   ========================================================================== */
+.grid {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto;
+    perspective: 1000px; 
+}
+
+.grid-easy {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-hard {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (min-width: 500px) {
+    .grid-hard {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.card {
+    aspect-ratio: 1 / 1;
+    position: relative;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--shadow);
+    border-radius: 12px;
+}
+
+/* Application de la rotation */
+.card.flipped, .card.matched {
+    transform: rotateY(180deg);
+}
+
+/* Configuration matérielle des faces internes */
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Cache la face opposée pendant le retournement */
+    -webkit-backface-visibility: hidden; 
+    backface-visibility: hidden;
+    
+    /* Correction bugs d'affichage Chrome / Safari (Isole les couches de rendu) */
+    transform: rotateX(0deg); 
+}
+
+/* Verso de la carte (Visible par défaut au départ) */
+.card-back {
+    background: var(--card-bg-back);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    z-index: 2; /* Force à rester au premier plan au repos */
+}
+
+/* Filigrane d'interrogation sur le dos */
+.card-back::after {
+    content: "";
+    width: 40%;
+    height: 40%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.4;
+}
+
+/* Recto de la carte (Contient l'émoji, visible une fois retournée) */
+.card-front {
+    background: var(--card-bg-front);
+    color: #000;
+    border: 2px solid #e2e8f0;
+    font-size: 2.2rem;
+    user-select: none;
+    
+    /* Pré-retourné à 180 degrés */
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+}
+
+@media (max-width: 375px) {
+    .card-front {
+        font-size: 1.6rem;
+    }
+    body {
+        padding: 10px;
+    }
+}
+
+/* ==========================================================================
+   5. FENÊTRE MODALE DE VICTOIRE
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal-body {
+    background: #1e293b;
+    border: 2px solid var(--accent);
+    padding: 40px;
+    border-radius: 24px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.victory-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.modal-body h2 {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.summary-box {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 12px;
+    padding: 15px;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 1rem;
+}
+
+.summary-line strong {
+    color: #fff;
+}

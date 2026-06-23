@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlipMemory - Jeu de Mémoire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main id="home-screen" class="screen">
+        <h1>FlipMemory</h1>
+        <p class="subtitle">Testez et entraînez votre mémoire visuelle</p>
+        
+        <section class="scores-panel">
+            <p>Meilleur temps (Facile) : <span id="best-easy" class="score-val">--:--</span></p>
+            <p>Meilleur temps (Difficile) : <span id="best-hard" class="score-val">--:--</span></p>
+        </section>
+
+        <nav class="btn-group">
+            <button class="btn" id="btn-easy">Mode Facile (4 × 4)</button>
+            <button class="btn" id="btn-hard">Mode Difficile (6 × 4)</button>
+        </nav>
+    </main>
+
+    <main id="game-screen" class="game-container hidden">
+        <header class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">Temps</span>
+                <span id="timer-val" class="stat-value">00:00</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Tentatives</span>
+                <span id="moves-val" class="stat-value">0</span>
+            </div>
+            <button class="btn btn-small" id="btn-quit">Quitter</button>
+        </header>
+
+        <div id="game-grid" class="grid"></div>
+    </main>
+
+    <div id="victory-modal" class="modal-overlay hidden">
+        <section class="modal-body" role="dialog" aria-modal="true">
+            <span class="victory-icon">🎉</span>
+            <h2>Félicitations !</h2>
+            <p>Vous avez trouvé toutes les paires.</p>
+            
+            <div class="summary-box">
+                <div class="summary-line">Mode de jeu : <strong id="modal-diff">Facile</strong></div>
+                <div class="summary-line">Temps écoulé : <strong id="modal-time">00:00</strong></div>
+                <div class="summary-line">Tentatives : <strong id="modal-moves">0</strong></div>
+                <div class="summary-line" id="new-record-row" style="color: var(--accent); font-weight: bold; display: none; justify-content: center; margin-top: 10px;">
+                    🏆 Nouveau Record !
+                </div>
+            </div>
+
+            <button class="btn btn-success" id="btn-replay">Rejouer</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
